@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
@@ -26,7 +26,7 @@ public class Member {
     private Team team;
 
     public Member(String username) {
-        new Member(username, null, null);
+        this(username, null, null);
     }
 
     public Member(String username, MemberDetail memberDetail, Team team) {
