@@ -15,17 +15,16 @@ import static lombok.AccessLevel.PROTECTED;
 public class Team {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     @Column(name = "team_id")
     private Long id;
 
     private String title;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.PERSIST)
     private List<Member> members = new ArrayList<>();
 
-    public Team(String title, List<Member> members) {
+    public Team(String title) {
         this.title = title;
-        this.members = members;
     }
 }

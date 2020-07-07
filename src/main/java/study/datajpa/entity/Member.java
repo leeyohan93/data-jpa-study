@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 import static lombok.AccessLevel.PROTECTED;
 
@@ -13,7 +14,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Member {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String username;
@@ -38,5 +39,13 @@ public class Member {
     public void setMemberDetail(MemberDetail memberDetail) {
         this.memberDetail = memberDetail;
         memberDetail.setMember(this);
+    }
+
+    public void settingTeam(Team team) {
+        if (Objects.nonNull(this.team)) {
+            this.team.getMembers().remove(this);
+        }
+        this.team = team;
+        team.getMembers().add(this);
     }
 }
