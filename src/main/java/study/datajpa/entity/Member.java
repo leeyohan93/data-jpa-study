@@ -1,7 +1,9 @@
 package study.datajpa.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -10,14 +12,18 @@ import static lombok.AccessLevel.PROTECTED;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = PROTECTED)
+@EqualsAndHashCode(of = "username")
 public class Member {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String username;
+
+    private String alias;
 
     @OneToOne(mappedBy = "member", cascade = CascadeType.PERSIST)
     private MemberDetail memberDetail;
@@ -45,7 +51,8 @@ public class Member {
         if (Objects.nonNull(this.team)) {
             this.team.getMembers().remove(this);
         }
+
         this.team = team;
-        team.getMembers().add(this);
+        team.add(this);
     }
 }

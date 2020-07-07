@@ -4,7 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import study.datajpa.application.TeamService;
 import study.datajpa.repository.TeamRepository;
+
+import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -13,6 +16,9 @@ class TeamTest {
 
     @Autowired
     TeamRepository teamRepository;
+
+    @Autowired
+    TeamService teamService;
 
     @Test
     @DisplayName("Team : Member OneToMany create Test")
@@ -26,5 +32,13 @@ class TeamTest {
         Team savedTeam = teamRepository.save(bestTeam);
 
         assertThat(savedTeam.getMembers()).containsExactly(pobi, yohan);
+    }
+
+    @Test
+    @DisplayName("Team : Member OneToMany update Test")
+    void updateOneToManyTest() {
+        List<Member> updatedMembers = teamService.updateTeamMember("bestTeam");
+
+        assertThat(updatedMembers).contains(new Member("newPobi"));
     }
 }
