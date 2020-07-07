@@ -21,8 +21,18 @@ public class Member {
     @OneToOne(mappedBy = "member", cascade = CascadeType.PERSIST)
     private MemberDetail memberDetail;
 
+    @ManyToOne
+    @JoinColumn(name = "team_id")
+    private Team team;
+
     public Member(String username) {
+        new Member(username, null, null);
+    }
+
+    public Member(String username, MemberDetail memberDetail, Team team) {
         this.username = username;
+        this.memberDetail = memberDetail;
+        this.team = team;
     }
 
     public void setMemberDetail(MemberDetail memberDetail) {
