@@ -16,7 +16,7 @@ public class MemberDetail {
     @GeneratedValue
     private Long detailId;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "id")
     private Member member;
 
