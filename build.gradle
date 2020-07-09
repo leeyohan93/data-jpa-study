@@ -27,6 +27,9 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	// https://mvnrepository.com/artifact/p6spy/p6spy
+	compile group: 'p6spy', name: 'p6spy', version: '3.8.7'
+
 }
 
 test {

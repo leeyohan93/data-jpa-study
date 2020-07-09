@@ -17,15 +17,12 @@ public class Product {
     @GeneratedValue
     private Long id;
 
-//    private Money price;
-//
-//    public Product(Money price) {
-//        this.price = price;
-//    }
+    private String title;
 
-    private String price;
+    private Money price;
 
-    public Product(String price) {
+    public Product(String title, Money price) {
+        this.title = title;
         this.price = price;
     }
 }
