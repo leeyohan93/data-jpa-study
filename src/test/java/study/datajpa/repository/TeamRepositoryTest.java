@@ -9,10 +9,6 @@ import study.datajpa.entity.Sponsor;
 import study.datajpa.entity.Team;
 
 import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
 class TeamRepositoryTest {
@@ -26,38 +22,38 @@ class TeamRepositoryTest {
     @Test
     void 다대일_양방향_연관관계_요소추가() {
         // given
-        Team teamA = new Team("A팀", Arrays.asList(new Member("yohan"), new Member("hmin")));
-        teamRepository.save(teamA);
+        Team service = new Team("서비스팀");
+        service.add(new Member("이요한"));
+        service.add(new Member("홍길동"));
+        teamRepository.save(service);
         em.flush();
+        em.clear();
 
-        // when / then
-        Team persistedTeam = teamRepository.findById(teamA.getId()).get();
-        Member guest = new Member("guest");
+        // when
+        Team persistedTeam = teamRepository.findById(1L).get();
+        Member guest = new Member("신입개발자");
         persistedTeam.add(guest);
 
-        // Q. select 쿼리가 발생할까 ?
-        // A. 발생하지 않는다.
+        // then
         em.flush();
-        assertThat(persistedTeam.contain(guest)).isTrue();
     }
 
     @DisplayName("일대다 단방향 연관관계에서 일에서 다의 요소를 추가할 때 select 가 발생하는가")
     @Test
     void 일대다_단방향_연관관계_요소추가() {
         // given
-        Team teamA = new Team("A팀", new ArrayList<>(), Arrays.asList(new Sponsor("SKT"), new Sponsor("KT")));
-        teamRepository.save(teamA);
+        Team service = new Team("서비스팀");
+        service.add(new Sponsor("배달의민족"));
+        service.add(new Sponsor("NEXTSTEP"));
+        teamRepository.save(service);
         em.flush();
+        em.clear();
 
-        // when / then
-        Team persistedTeam = teamRepository.findById(teamA.getId()).get();
-        Sponsor lg = new Sponsor("LG");
-        persistedTeam.add(lg);
+        // when
+        Team persistedTeam = teamRepository.findById(1L).get();
+        persistedTeam.add(new Sponsor("우아한형제들"));       // select 쿼리 발생 !?
 
-        // Q. select 쿼리가 발생할까 ?
-        // A. 발생하지 않는다.
+        // then
         em.flush();
-        assertThat(persistedTeam.contain(lg)).isTrue();
     }
-
 }

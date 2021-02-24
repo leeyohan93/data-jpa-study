@@ -2,7 +2,6 @@ package study.datajpa.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import static lombok.AccessLevel.PROTECTED;
 
-@ToString
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
@@ -28,10 +26,11 @@ public class Team {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "team_id")
+//    @OrderColumn(name = "position")
     private List<Sponsor> sponsors = new ArrayList<>();
 
     public Team(String title) {
-        this(title, new ArrayList<>());
+        this.title = title;
     }
 
     public Team(final String title, final List<Member> members) {
@@ -41,22 +40,16 @@ public class Team {
     public Team(final String title, final List<Member> members, final List<Sponsor> sponsors) {
         this.title = title;
         this.members.addAll(members);
+        members.forEach(member -> member.join(this));
         this.sponsors.addAll(sponsors);
     }
 
     public void add(final Member member) {
+        member.join(this);
         this.members.add(member);
     }
 
     public void add(final Sponsor sponsor) {
         this.sponsors.add(sponsor);
-    }
-
-    public boolean contain(final Member member) {
-        return members.contains(member);
-    }
-
-    public boolean contain(final Sponsor sponsor) {
-        return sponsors.contains(sponsor);
     }
 }

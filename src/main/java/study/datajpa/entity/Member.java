@@ -23,28 +23,12 @@ public class Member {
 
     private String username;
 
-    private String alias;
-
-    @OneToOne(mappedBy = "member", cascade = CascadeType.PERSIST)
-    private MemberDetail memberDetail;
-
     @ManyToOne
     @JoinColumn(name = "team_id")
     private Team team;
 
     public Member(String username) {
-        this(username, null, null);
-    }
-
-    public Member(String username, MemberDetail memberDetail, Team team) {
         this.username = username;
-        this.memberDetail = memberDetail;
-        this.team = team;
-    }
-
-    public void setMemberDetail(MemberDetail memberDetail) {
-        this.memberDetail = memberDetail;
-        memberDetail.setMember(this);
     }
 
     public void settingTeam(Team team) {
@@ -54,5 +38,9 @@ public class Member {
 
         this.team = team;
         team.add(this);
+    }
+
+    public void join(final Team team) {
+        this.team = team;
     }
 }
